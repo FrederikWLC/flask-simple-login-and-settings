@@ -163,5 +163,12 @@ def settings():
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return json.dumps({'status': 'Invalid email address', 'box_ids': ['email']})
 
+        if phone == current_user.phone_number and email == current_user.email:
+            return json.dumps({'status': 'no changes'})
+
+        current_user.phone_prefix = "+1"
+        current_user.phone_number = phone
+        current_user.email = email
+        db.session.commit()
         return json.dumps({'status': 'success'})
     return render_template("settings.html")

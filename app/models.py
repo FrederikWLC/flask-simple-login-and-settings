@@ -19,7 +19,8 @@ class User(UserMixin, db.Model):
 
     username = db.Column(db.String(120), index=True)
     email = db.Column(db.String(120), index=True)
-    phone_number = db.Column(db.String(15), index=True)
+    phone_prefix = db.Column(db.String(4), index=True)
+    phone_number = db.Column(db.String(14), index=True)
     password_hash = db.Column(db.String(128))
 
     def set_password(self, password):

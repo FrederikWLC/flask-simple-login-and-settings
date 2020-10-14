@@ -17,3 +17,12 @@ function unload(_delay) {
  function swap_url(url){
      window.history.pushState("", "", url);
  }
+
+function flash(c,bgc,txt){
+ $("#flash").stop(stopAll=true);
+ $("#flash").css('color', c);
+ $("#flash").css('background-color', bgc);
+ $("#flash").animate({ opacity: 1, queue: false });
+ $("#flash").children().text(txt);
+ $("#flash").delay(1500).animate({ opacity: 0, queue: false });
+}

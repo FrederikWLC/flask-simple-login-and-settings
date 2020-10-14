@@ -24,7 +24,8 @@ $.post({
       success(response) {
         var response = JSON.parse(response);
         var status = response["status"];
-        if (status === "success") { location.reload(); }
+        if (status === "success") { flash("#ffff","#00ff00","Successfully applied changes") }
+        else if (status === "no changes") {}
         else{message(status, response["box_ids"], true);}
 
       }});

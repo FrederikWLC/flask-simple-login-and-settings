@@ -12,7 +12,7 @@
           			</a>
 	              </p>
 	                <p class="control is-expanded has-icons-left has-icons-right" id="phone-control">
-	                  <input id="phone-field" class="input" type="tel" placeholder='Phone' {% if current_user.email %}} value="{{current_user.phone}}"{% endif %} maxlength="10">
+	                  <input id="phone-field" class="input" type="tel" placeholder='Phone' {% if current_user.phone_number %}} value="{{current_user.phone_number}}"{% endif %} maxlength="10">
 	                  <span class="icon is-small is-left">
 	                    <i class="fa fa-phone"></i>
 	                  </span>
