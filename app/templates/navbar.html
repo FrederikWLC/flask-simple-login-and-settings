@@ -17,9 +17,15 @@
         <div class="navbar-item">
           <div class="field is-grouped" style="overflow: auto;">
             <p class="control">
+              {% if not current_user.is_authenticated %}
               <a href="/login/" class="button is-link is-outlined">
-                <span>Log in</span>
+                <span>Login</span>
               </a>
+              {% else %}
+              <a href="/logout/" class="button is-link is-outlined">
+                <span>Log out</span>
+              </a>
+              {% endif %}
             </p>
             <p class="control">
               <a href="/about/" class="button is-link is-outlined">

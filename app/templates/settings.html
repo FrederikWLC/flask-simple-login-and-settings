@@ -1,1 +1,61 @@
-This page is under construction...
+{% extends "base.html" %}
+{% block body %}
+		<div class="columns">
+          <div id="settings-box" class="settings-box column is-auto has-text-centered">
+              <p class="title is-1">Settings</p>
+              <div id="settings-fields">
+              	
+              	<div class="field is-expanded has-addons" id="phone">
+	              <p class="control">
+	              	<a class="button is-static is-active" id="prefix">
+            			+1
+          			</a>
+	              </p>
+	                <p class="control is-expanded has-icons-left has-icons-right" id="phone-control">
+	                  <input id="phone-field" class="input" type="tel" placeholder='Phone' {% if current_user.email %}} value="{{current_user.phone}}"{% endif %} maxlength="10">
+	                  <span class="icon is-small is-left">
+	                    <i class="fa fa-phone"></i>
+	                  </span>
+	                  <span class="icon is-small is-right">
+	                    <i class="fa fa-asterisk"></i>
+	                  </span>
+	                </p>
+	                
+	          </div>
+	          <div id="feedback-phone" class="feedback help level-left">
+        				<div class="message"></div>
+	              </div>
+
+	              
+
+	              <div class="field" id="email">
+	                <p class="control has-icons-left has-icons-right">
+	                  <input id="email-field" class="input" type="email" placeholder='Email' {% if current_user.email %}} value="{{current_user.email}}" {% endif %}>
+	                  <span class="icon is-small is-left">
+	                    <i class="fa fa-envelope"></i>
+	                  </span>
+	                  <span class="icon is-small is-right">
+	                    <i class="fa fa-asterisk"></i>
+	                  </span>
+	                </p>
+	                <div id="feedback-email" class="feedback help level-left">
+        				<div class="message"></div>
+      				</div>
+	              </div>
+
+	          </div>
+
+	          <br>
+
+	<a id="apply-button" class="form-button button is-dark is-inverted is-outlined"><span>Apply changes</span><span class="icon is-medium">
+      <i class="fa fa-check"></i>
+    </span></a>
+
+
+	      </div>
+	  </div>
+{% endblock %}
+{% block scripts %}
+<link rel="stylesheet" href="/static/css/settings.css">
+<script src="../static/js/settings.js"></script>
+{% endblock %}

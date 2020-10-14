@@ -1,0 +1,38 @@
+#settings-box {
+	padding: 0;
+	width: 90%;
+	margin: auto;
+}
+
+#settings-fields {
+	max-width: 300px;
+	margin: auto;
+}
+
+
+
+div.field {
+	margin-top: 10px !important;
+}
+
+.feedback {
+  width: 100%;
+  height: 5px;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.feedback.message {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0 auto;
+}
+
+#feedback-phone {
+	margin-top: -7px;
+}
+
+#feedback-email {
+	margin-top: 5px;
+}

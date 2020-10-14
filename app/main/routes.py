@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import redirect, url_for, render_template, abort, request, current_app
+from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from app import db
-import app.models
+import app.models as models
 import json
 import folium
 from folium.plugins import FastMarkerCluster
@@ -18,6 +19,7 @@ from app.main import bp
 # -------- Home page ---------------------------------------------------------- #
 
 
+@login_required
 @bp.route("/")
 @bp.route("/main/", methods=['GET', 'POST'])
 def main():
@@ -88,7 +90,46 @@ def login():
 
 @bp.route("/register/", methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.main"))
+
+    if request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
+        repeat_password = request.form.get("repeat-password")
+        print(username)
+        print(password)
+        print(repeat_password)
+
+        if not username:
+            return json.dumps({'status': 'Username must be filled in', 'box_ids': ['username']})
+
+        if not password:
+            return json.dumps({'status': 'Password must be filled in', 'box_ids': ['password']})
+
+        if not repeat_password:
+            return json.dumps({'status': 'Repeat Password must be filled in', 'box_ids': ['repeat-password']})
+
+        if not models.User.query.filter_by(username=username).first() is None:
+            return json.dumps({'status': 'Username taken', 'box_ids': ['username']})
+
+        if not password == repeat_password:
+            return json.dumps({'status': 'Passwords don\'t match', 'box_ids': ['password', 'repeat-password']})
+
+        user = models.User(username=username)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        login_user(user, remember=True)
+        return json.dumps({'status': 'success'})
+
     return render_template("register.html")
+
+
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
 @bp.route("/about/", methods=['GET'])
@@ -101,6 +142,26 @@ def help():
     return render_template("help.html")
 
 
-@bp.route("/settings/", methods=['GET'])
+@login_required
+@bp.route("/settings/", methods=['GET', 'POST'])
 def settings():
+
+    if request.method == 'POST':
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        print(email)
+
+        if not phone:
+            return json.dumps({'status': 'Phone must be filled in', 'box_ids': ['phone']})
+
+        if not email:
+            return json.dumps({'status': 'Email must be filled in', 'box_ids': ['email']})
+
+        if not phone.isdigit() or len(phone) != 10:
+            return json.dumps({'status': 'Invalid phone number', 'box_ids': ['phone']})
+
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return json.dumps({'status': 'Invalid email address', 'box_ids': ['email']})
+
+        return json.dumps({'status': 'success'})
     return render_template("settings.html")
