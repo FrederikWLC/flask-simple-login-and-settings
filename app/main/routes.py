@@ -19,9 +19,9 @@ from app.main import bp
 # -------- Home page ---------------------------------------------------------- #
 
 
-@login_required
 @bp.route("/")
 @bp.route("/main/", methods=['GET', 'POST'])
+@login_required
 def main():
     q_address = request.args.get('loc')
     q_radius = request.args.get('rad')
@@ -40,13 +40,6 @@ def main():
         gender = request.form.get("gender")
         min_age = request.form.get("min_age")
         max_age = request.form.get("max_age")
-
-        print(address)
-        print(radius)
-        print(skill)
-        print(gender)
-        print(min_age)
-        print(max_age)
 
         location = geocode(address)
         if not location:
@@ -85,6 +78,26 @@ def main():
 
 @bp.route("/login/", methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.main"))
+
+    if request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if not username:
+            return json.dumps({'status': 'Username must be filled in', 'box_ids': ['username']})
+
+        if not password:
+            return json.dumps({'status': 'Password must be filled in', 'box_ids': ['password']})
+
+        user = models.User.query.filter_by(username=username).first()
+
+        if user is None or not user.check_password(password):
+            return json.dumps({'status': 'Incorrect username or password', 'box_ids': ['username', 'password']})
+
+        login_user(user, remember=True)
+        return json.dumps({'status': 'success'})
     return render_template("login.html")
 
 
@@ -97,9 +110,6 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         repeat_password = request.form.get("repeat-password")
-        print(username)
-        print(password)
-        print(repeat_password)
 
         if not username:
             return json.dumps({'status': 'Username must be filled in', 'box_ids': ['username']})
@@ -126,10 +136,11 @@ def register():
     return render_template("register.html")
 
 
+@bp.route("/logout/", methods=['GET'])
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('main.login'))
 
 
 @bp.route("/about/", methods=['GET'])
@@ -142,14 +153,13 @@ def help():
     return render_template("help.html")
 
 
-@login_required
 @bp.route("/settings/", methods=['GET', 'POST'])
+@login_required
 def settings():
 
     if request.method == 'POST':
         email = request.form.get("email")
         phone = request.form.get("phone")
-        print(email)
 
         if not phone:
             return json.dumps({'status': 'Phone must be filled in', 'box_ids': ['phone']})
