@@ -2,9 +2,11 @@
 
 ## TO RUN THE PROGRAM:
 
-1. '''flask db init'''
-2. '''flask db migrate -m "Tables"'''
-3. '''flask db upgrade'''
+### Set up the database:
+1. ```flask db init```
+2. ```flask db migrate -m "Tables"```
+3. ```flask db upgrade```
 
-4. '''fcon'''
-5. ''flask run'''
+### Configure running type and run:
+4. ```fcon```
+5. ```flask run```
