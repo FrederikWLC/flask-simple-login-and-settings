@@ -15,7 +15,7 @@ lxml==4.5.2
 maxminddb==1.5.4
 multidict==4.7.6
 proxybroker==0.3.2
-pycares==3.1.1
+pycares==4.2.0
 pycparser==2.20
 pyparsing==2.4.7
 pyperclip==1.8.0
